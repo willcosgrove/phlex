@@ -12,11 +12,11 @@ module Phlex::Elements
 			def #{element}(**attributes, &block)
 				if attributes.length > 0
 					if block_given?
-						@_target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes.hash] || __attributes__(**attributes)) << ">"
+						@_target << "<#{tag}" << __fetch_attributes__(**attributes) << ">"
 						yield_content(&block)
 						@_target << "</#{tag}>"
 					else
-						@_target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes.hash] || __attributes__(**attributes)) << "></#{tag}>"
+						@_target << "<#{tag}" << __fetch_attributes__(**attributes) << "></#{tag}>"
 					end
 				else
 					if block_given?
@@ -45,7 +45,7 @@ module Phlex::Elements
 
 			def #{element}(**attributes)
 				if attributes.length > 0
-					@_target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes.hash] || __attributes__(**attributes)) << ">"
+					@_target << "<#{tag}" << __fetch_attributes__(**attributes) << ">"
 				else
 					@_target << "<#{tag}>"
 				end

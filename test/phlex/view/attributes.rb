@@ -26,6 +26,23 @@ describe Phlex::HTML do
 			expect(output).to be == %(<div data-name_first_name="Joel"></div>)
 		end
 	end
+	
+	with "resolve_attributes hook defined" do
+		view do
+			def resolve_attributes(turbo: false, **rest)
+				rest.merge!(data_turbo: "true", data_turbo_stream: true) if turbo
+				rest
+			end
+			
+			def template
+				div turbo: true
+			end
+		end
+		
+		it "uses the resolved attributes" do
+			expect(output).to be == %(<div data-turbo="true" data-turbo-stream></div>)
+		end
+	end
 
 	if RUBY_ENGINE == "ruby"
 		with "unique tag attributes" do
